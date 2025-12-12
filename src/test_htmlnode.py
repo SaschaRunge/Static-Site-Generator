@@ -131,14 +131,14 @@ class TestHTMLNode(unittest.TestCase):
         )
 
     def test_parent_has_no_children(self):
-        def _helper():
+        def helper():
             ParentNode("p", []).to_html()
-        self.assertRaises(ValueError, _helper)
+        self.assertRaises(ValueError, helper)
     
     def test_parent_has_no_tag(self):
-        def _helper():
+        def helper():
             ParentNode("", [LeafNode("b", "i am bold")]).to_html()
-        self.assertRaises(ValueError, _helper)
+        self.assertRaises(ValueError, helper)
 
 
 

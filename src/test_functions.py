@@ -4,7 +4,7 @@ from textnode import TextNode, TextType
 from functions import (
     text_node_to_html_node, split_nodes_delimiter, extract_markdown_images, 
     extract_markdown_links, split_nodes_image, split_nodes_link,
-    text_to_textnodes
+    text_to_textnodes, markdown_to_blocks
     )
 
 
@@ -378,6 +378,117 @@ class TestFunctions(unittest.TestCase):
         text = ""
         nodes = text_to_textnodes(text)
         self.assertListEqual([], nodes)
+
+    def test_markdown_to_blocks(self):
+        md = """
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
+    def test_markdown_to_blocks_strip_redundant_newline(self):
+        md = """
+This is **bolded** paragraph
+
+
+
+
+
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+
+
+- This is a list
+- with items
+
+
+
++1
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+                "+1",
+            ],
+        )
+
+    def test_markdown_to_blocks_single_block(self):
+        md = """
+This is **bolded** paragraph
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph\n"
+                "This is another paragraph with _italic_ text and `code` here\n"
+                "This is the same paragraph on a new line",
+            ],
+        )
+
+    def test_markdown_to_blocks_trailing_and_leading_newline(self):
+        md = """
+
+
+
+
+This is **bolded** paragraph
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+
+
+
+
+
+
+
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph\n"
+                "This is another paragraph with _italic_ text and `code` here\n"
+                "This is the same paragraph on a new line",
+            ],
+        )
+
+    def test_markdown_to_blocks_empty(self):
+        md = ""
+
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, [])
+    
+    def test_markdown_to_blocks_newline_only(self):
+        md = "\n\n\n\n\n\n\n\n\n"
+
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, [])
+
+
+        
     
 
 

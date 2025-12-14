@@ -306,18 +306,78 @@ class TestFunctions(unittest.TestCase):
             ],
             new_nodes,
         )
-    '''
+
     def test_text_to_textnodes(self):
-        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)",
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
         nodes = text_to_textnodes(text)
         self.assertListEqual(
             [
-                TextNode("This is text with an ", TextType.PLAIN),
-                TextNode("", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode("This is ", TextType.PLAIN),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.PLAIN),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.PLAIN),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.PLAIN),
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" and a ", TextType.PLAIN),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
             ],
-            new_nodes,
+            nodes,
         )
-    '''
+    
+    def test_text_to_textnodes_order_shuffled(self):
+        text = "![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) is not a [link](https://boot.dev) and this _italic_ **text** has a `code block`"
+        nodes = text_to_textnodes(text)
+        self.assertListEqual(
+            [
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" is not a ", TextType.PLAIN),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+                TextNode(" and this ", TextType.PLAIN),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" ", TextType.PLAIN),
+                TextNode("text", TextType.BOLD),
+                TextNode(" has a ", TextType.PLAIN),
+                TextNode("code block", TextType.CODE),                
+            ],
+            nodes,
+        )
+
+    def test_text_to_textnodes_order_shuffled_with_multiple_links(self):
+        text = "![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) is not a [link](https://boot.dev) and [another link](https://google.com) and this _italic_ **text** has a `code block`"
+        nodes = text_to_textnodes(text)
+        self.assertListEqual(
+            [
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" is not a ", TextType.PLAIN),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+                TextNode(" and ", TextType.PLAIN),
+                TextNode("another link", TextType.LINK, "https://google.com"),
+                TextNode(" and this ", TextType.PLAIN),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" ", TextType.PLAIN),
+                TextNode("text", TextType.BOLD),
+                TextNode(" has a ", TextType.PLAIN),
+                TextNode("code block", TextType.CODE),                
+            ],
+            nodes,
+        )
+
+    def test_text_to_textnodes_single(self):
+        text = "![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg)"
+        nodes = text_to_textnodes(text)
+        self.assertListEqual(
+            [
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),             
+            ],
+            nodes,
+        )
+    
+    def test_text_to_textnodes_nothing(self):
+        text = ""
+        nodes = text_to_textnodes(text)
+        self.assertListEqual([], nodes)
     
 
 

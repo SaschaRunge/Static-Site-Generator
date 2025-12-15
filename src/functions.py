@@ -100,15 +100,13 @@ def text_to_textnodes(text):
     return nodes
 
 def markdown_to_blocks(text):
-    blocks = []
     clean_blocks = []
-
     blocks = text.split("\n\n")
 
-    for i in range(len(blocks)):
-        blocks[i] = blocks[i].strip().strip("\n")
-        if blocks[i]:
-            clean_blocks.append(blocks[i])
+    for block in blocks:
+        block = block.strip()
+        if block:
+            clean_blocks.append(block)
     return clean_blocks
     
 

@@ -28,8 +28,18 @@ def text_to_child_nodes(text, parent_block_type) -> list:
     match(parent_block_type):
         case BlockType.CODE:
             text_nodes = code_block_to_text_nodes(text)
-        case BlockType.HEADING:
+        case BlockType.HEADING1:
+            text_nodes = heading_to_text_nodes(text)
+        case BlockType.HEADING2:
             text_nodes = heading_to_text_nodes(text) 
+        case BlockType.HEADING3:
+            text_nodes = heading_to_text_nodes(text) 
+        case BlockType.HEADING4:
+            text_nodes = heading_to_text_nodes(text) 
+        case BlockType.HEADING5:
+            text_nodes = heading_to_text_nodes(text) 
+        case BlockType.HEADING6:
+            text_nodes = heading_to_text_nodes(text)  
         case BlockType.QUOTE:
             text_nodes = quote_to_text_nodes(text) 
         case BlockType.UNORDERED_LIST:

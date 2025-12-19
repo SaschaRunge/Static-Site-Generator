@@ -10,15 +10,15 @@ class TestBlocks(unittest.TestCase):
 
     def test_is_heading_single_hashtag(self):
         md = "# This is a heading"
-        self.assertEqual(block_to_block_type(md), BlockType.HEADING)
+        self.assertEqual(block_to_block_type(md), BlockType.HEADING1)
 
     def test_is_heading_max_hashtags(self):
         md = "###### This is a heading"
-        self.assertEqual(block_to_block_type(md), BlockType.HEADING)
+        self.assertEqual(block_to_block_type(md), BlockType.HEADING6)
 
     def test_is_heading_seperated_hashtags(self):
         md = "## # This should be allowed."
-        self.assertEqual(block_to_block_type(md), BlockType.HEADING)
+        self.assertEqual(block_to_block_type(md), BlockType.HEADING2)
     
     def test_is_heading_to_many_hashtags(self):
         md = "########## This is not a heading"
@@ -58,7 +58,7 @@ class TestBlocks(unittest.TestCase):
     
     def test_is_heading_code_override(self):
         md = "### ```This is still a heading.```"
-        self.assertEqual(block_to_block_type(md), BlockType.HEADING)
+        self.assertEqual(block_to_block_type(md), BlockType.HEADING3)
 
     def test_is_heading_broken_code_override(self):
         md = "#a## ```This is neither a heading nor code.```"

@@ -76,7 +76,7 @@ some **bold** text.
         html = node.to_html()
         self.assertEqual(
             html,
-            "<div><h1>This is a heading with <i>italic</i> and some <b>bold</b> text.</h1><h1>This is an additional heading.</h1></div>",
+            "<div><h3>This is a heading with <i>italic</i> and some <b>bold</b> text.</h3><h4>This is an additional heading.</h4></div>",
         )
 
     def test_quotes(self):

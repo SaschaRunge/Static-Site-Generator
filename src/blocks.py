@@ -1,14 +1,15 @@
 from enum import Enum
 
 class BlockType(Enum):
-    PARAGRAPH = "paragraph"
-    HEADING = "heading"
+    PARAGRAPH = "p"
+    HEADING = "h1"
     CODE = "code"
-    QUOTE = "quote"
-    UNORDERED_LIST = "unordered_list"
-    ORDERED_LIST = "ordered_list"
+    QUOTE = "blockquote"
+    UNORDERED_LIST = "li"
+    ORDERED_LIST = "ol"
 
 def block_to_block_type(md_text):
+
     if not md_text:
         return BlockType.PARAGRAPH
     
@@ -26,13 +27,13 @@ def block_to_block_type(md_text):
     
     if is_ordered_list(md_text):
         return BlockType.ORDERED_LIST
-    
+            
     return BlockType.PARAGRAPH
     
 def is_heading(md_text):
     text_parts = md_text.split(" ", 1)
     if len(text_parts) > 1:
-        if text_parts[0] in "######" and text_parts[1]: # a bit unclear if empty headings allowed. Disallow for now
+        if text_parts[0] and text_parts[0] in "######" and text_parts[1]: # a bit unclear if empty headings allowed. Disallow for now
             return True
     return False
 

@@ -64,9 +64,21 @@ class TestBlocks(unittest.TestCase):
         md = "#a## ```This is neither a heading nor code.```"
         self.assertEqual(block_to_block_type(md), BlockType.PARAGRAPH)
 
+    def test_is_heading_empty(self):
+        md = "### "
+        self.assertEqual(block_to_block_type(md), BlockType.PARAGRAPH)
+
     def test_is_quote_block(self):
         md = ">Line1\n>Line2\n>Line3"
         self.assertEqual(block_to_block_type(md), BlockType.QUOTE)
+
+    def test_is_not_quote_block_added_space_beginning(self):
+        md = " >Line1\n>Line2\n>Line3"
+        self.assertEqual(block_to_block_type(md), BlockType.PARAGRAPH)
+    
+    def test_is_not_quote_block_added_space_middle(self):
+        md = ">Line1\n >Line2\n>Line3"
+        self.assertEqual(block_to_block_type(md), BlockType.PARAGRAPH)
 
     def test_is_quote_block_missing_identifier(self):
         md = ">Line1\nLine2\n>Line3"

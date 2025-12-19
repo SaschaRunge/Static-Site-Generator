@@ -6,7 +6,7 @@ from htmlnode import LeafNode
 
 def text_node_to_html_node(node: LeafNode):
     match(node.text_type):
-        case TextType.PLAIN:
+        case TextType.TEXT:
             return LeafNode(None, node.text)
         case TextType.BOLD:
             return LeafNode("b", node.text)
@@ -24,7 +24,7 @@ def text_node_to_html_node(node: LeafNode):
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for node in old_nodes:
-        if node.text_type != TextType.PLAIN:
+        if node.text_type != TextType.TEXT:
             new_nodes.append(node)
             continue
         
@@ -37,7 +37,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             if text_parts[i]:
                 is_even = (i % 2 == 0)
                 if is_even:
-                    new_nodes.append(TextNode(text_parts[i], TextType.PLAIN))
+                    new_nodes.append(TextNode(text_parts[i], TextType.TEXT))
                 else:
                     new_nodes.append(TextNode(text_parts[i], text_type))
     return new_nodes
@@ -54,7 +54,7 @@ def split_nodes_image_or_link(old_nodes, text_type):
     
     new_nodes = []
     for node in old_nodes:
-        if node.text_type != TextType.PLAIN:
+        if node.text_type != TextType.TEXT:
             new_nodes.append(node)
             continue
 
@@ -75,12 +75,12 @@ def split_nodes_image_or_link(old_nodes, text_type):
 
             first_part, second_part = node_text.split(delimiter, 1)
             if first_part:
-                new_nodes.append(TextNode(first_part, TextType.PLAIN))
+                new_nodes.append(TextNode(first_part, TextType.TEXT))
             new_nodes.append(TextNode(text, text_type, url))
             node_text = second_part
 
         if node_text:
-            new_nodes.append(TextNode(node_text, TextType.PLAIN))
+            new_nodes.append(TextNode(node_text, TextType.TEXT))
 
     return new_nodes
 
@@ -91,7 +91,8 @@ def extract_markdown_links(text):
     return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text) #(?<!\!)\[(.*?)\]\((.*?)\) fails, same reason
 
 def text_to_textnodes(text):
-    node = TextNode(text, TextType.PLAIN)
+    node = TextNode(remove_whitespace(text), TextType.TEXT)
+    #print(f"{node = }")
     nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
     nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
     nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
@@ -109,4 +110,6 @@ def markdown_to_blocks(text):
             clean_blocks.append(block)
     return clean_blocks
     
+def remove_whitespace(text):
+    return text.replace("\n", " ").strip()
 

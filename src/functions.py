@@ -113,3 +113,9 @@ def markdown_to_blocks(text):
 def remove_whitespace(text):
     return text.replace("\n", " ").strip()
 
+def extract_title(markdown):
+    if markdown:
+        parts = markdown.split(" ", 1)
+        if len(parts) > 1 and parts[0] == "#":
+            return parts[1].split("\n", 1)[0]
+    raise Exception("h1 header missing in markdown document.")

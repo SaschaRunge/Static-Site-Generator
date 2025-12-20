@@ -4,7 +4,7 @@ from textnode import TextNode, TextType
 from functions import (
     text_node_to_html_node, split_nodes_delimiter, extract_markdown_images, 
     extract_markdown_links, split_nodes_image, split_nodes_link,
-    text_to_textnodes, markdown_to_blocks
+    text_to_textnodes, markdown_to_blocks, extract_title
     )
 
 
@@ -505,6 +505,33 @@ This is the same paragraph on a new line
             ],
         )
 
+    def test_extract_title(self):
+        text = "# Hello"
+        self.assertEqual(extract_title(text), "Hello")
+    
+    def test_extract_title_h2(self):
+        text = "## Hello"
+        self.assertRaises(Exception, extract_title, text)
+
+    def test_extract_title_missing_space(self):
+        text = "#Hello"
+        self.assertRaises(Exception, extract_title, text)
+    
+    def test_extract_title_leading_space(self):
+        text = " # Hello"
+        self.assertRaises(Exception, extract_title, text)
+
+    def test_extract_title_longer(self):
+        text = "# Hello World. This is a h1 title."
+        self.assertEqual(extract_title(text), "Hello World. This is a h1 title.")
+
+    def test_extract_title_longer(self):
+        text = "# Hello World. This is a h1 title.\nThis is a new line and not part of the title."
+        self.assertEqual(extract_title(text), "Hello World. This is a h1 title.")
+
+    def test_extract_title_empty_title(self):
+        text = "# "
+        self.assertEqual(extract_title(text), "")
         
     
 

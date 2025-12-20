@@ -23,7 +23,7 @@ def copy(source, destination):
     for content in os.listdir(abs_source):
         abs_content_path = os.path.join(abs_source, content)
         write_to_log(LOG_PATH, f"Writing from: {abs_content_path} to: {abs_destination}")
-        
+
         if os.path.isfile(abs_content_path):
             shutil.copy(abs_content_path, abs_destination)
         elif os.path.isdir(abs_content_path):

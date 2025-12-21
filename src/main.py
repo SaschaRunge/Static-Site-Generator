@@ -1,18 +1,29 @@
 import os
 import shutil
+import sys
 
-from generate_page import generate_page
+from generate_page import generate_page, generate_pages_recursive
 
 LOG_PATH = "./copy_log.md"
 STATIC_FOLDER = "./static"
-PUBLIC_FOLDER = "./public"
+PUBLIC_FOLDER = "./docs"
+CONTENT_FOLDER = "./content"
+TEMPLATE = "./template.html"
 
 def main():
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+        print(f"{basepath = }")
+    else:
+        basepath = "/"
+
     write_to_log(LOG_PATH, "", True)
     clean_public_folder()
 
     copy(STATIC_FOLDER, PUBLIC_FOLDER)
-    generate_page("./content/index.md", "./template.html", "./public/index.html")
+    #generate_page("./content/index.md", TEMPLATE, "./public/index.html")
+
+    generate_pages_recursive(CONTENT_FOLDER, TEMPLATE, PUBLIC_FOLDER, basepath)
 
 def copy(source, destination):
     abs_source = os.path.abspath(source)

@@ -90,7 +90,7 @@ some **bold** text.
         html = node.to_html()
         self.assertEqual(
             html,
-            "<div><blockquote><p>These are quotes with <i>italic</i> text. And <b>bold</b> text. And a bit of <code>code</code>.</p></blockquote></div>",
+            "<div><blockquote>These are quotes with <i>italic</i> text. And <b>bold</b> text. And a bit of <code>code</code>.</blockquote></div>",
         )
 
     def test_unordered_list(self):
@@ -137,6 +137,6 @@ the **same** even with inline stuff
         html = node.to_html()
         self.assertEqual(
             html,
-            "<div><blockquote><p>These are quotes with <i>italic</i> text. And <b>bold</b> text. And a bit of <code>code</code>.</p></blockquote>"
+            "<div><blockquote>These are quotes with <i>italic</i> text. And <b>bold</b> text. And a bit of <code>code</code>.</blockquote>"
             "<pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )

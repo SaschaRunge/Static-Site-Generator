@@ -10,8 +10,8 @@ def markdown_to_html_node(markdown):
     for block in blocks:
         block_type = block_to_block_type(block)
         child_nodes = text_to_child_nodes(block, block_type)
-        if block_type == BlockType.QUOTE:
-            child_nodes = [ParentNode("p", child_nodes)]  
+        #if block_type == BlockType.QUOTE:
+            #child_nodes = [ParentNode("p", child_nodes)]  
         if block_type == BlockType.UNORDERED_LIST:
             parent_nodes.append(ParentNode("ul", child_nodes))
         elif block_type == BlockType.ORDERED_LIST:

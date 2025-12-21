@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from generate_page import generate_page
+
 LOG_PATH = "./copy_log.md"
 STATIC_FOLDER = "./static"
 PUBLIC_FOLDER = "./public"
@@ -8,7 +10,9 @@ PUBLIC_FOLDER = "./public"
 def main():
     write_to_log(LOG_PATH, "", True)
     clean_public_folder()
+
     copy(STATIC_FOLDER, PUBLIC_FOLDER)
+    generate_page("./content/index.md", "./template.html", "./public/index.html")
 
 def copy(source, destination):
     abs_source = os.path.abspath(source)

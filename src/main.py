@@ -13,7 +13,7 @@ TEMPLATE = "./template.html"
 def main():
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
-        print(f"{basepath = }")
+        #print(f"{basepath = }")
     else:
         basepath = "/"
 
